@@ -15,7 +15,7 @@ yes_tumor_immages = os.listdir(image_dir + 'yes/')
 
 dataset = []
 labels = []
-input_size = 64
+input_size = 200
 
 for i, image_name in enumerate(no_tumor_immages):
     if(image_name.split('.')[1] == 'jpg'):
@@ -44,8 +44,13 @@ x_test = normalize(x_test, axis=1)
 #model
 model = Sequential()
 
+# Extracts features from input images using convolutional operations.
 model.add(Conv2D(32,(3,3), input_shape=(input_size,input_size, 3)))
+
+#Introduces non-linearity to the model, allowing it to learn complex patterns.
 model.add(Activation('relu'))
+
+#Reduces the spatial dimensions of the input data, retaining the most important information.
 model.add(MaxPooling2D(pool_size=(2,2)))
 
 model.add(Conv2D(32,(3,3), kernel_initializer='he_uniform'))
@@ -56,11 +61,15 @@ model.add(Conv2D(64,(3,3), kernel_initializer='he_uniform'))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 
+#Prepares the data for input into the fully connected (dense) layers.
 model.add(Flatten())
+#Learns global patterns and relationships from the features extracted by the convolutional layers.
 model.add(Dense(64))
 model.add(Activation('relu'))
+#Helps prevent overfitting by randomly setting a fraction of input units to zero during training.
 model.add(Dropout(0.5))
 model.add(Dense(1))
+#Scales the output to the range [0, 1], providing a probability score for binary classification.
 model.add(Activation('sigmoid'))
 
 

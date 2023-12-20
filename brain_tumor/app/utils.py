@@ -15,7 +15,7 @@ def result_interpretation(value):
 def get_result(img):
     image  = cv2.imread(img)
     image = Image.fromarray(image,'RGB')
-    image = image.resize((64,64))
+    image = image.resize((200,200))
     image = np.array(image)
     input_image = np.expand_dims(image,axis=0)
     result = model.predict(input_image)
